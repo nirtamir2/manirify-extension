@@ -1,34 +1,53 @@
-import { createSignal } from "solid-js";
 import "~/assets/tailwind.css";
 import solidLogo from "@/assets/solid.svg";
 import "./App.css";
-import wxtLogo from "/wxt.svg";
+import { getAIEmojiFromText } from "./getAIEmojiFromText";
 
-function App() {
-  const [count, setCount] = createSignal(0);
+
+function App(props: {
+  value: string;
+  x: number;
+  y: number;
+  isVisible: boolean;
+}) {
+  // function handleInput(e: Event) {
+  //   console.log(e.currentTarget.value);
+  // }
+  //
+  // document.addEventListener("input", (a) => handleInput);
+  // document.addEventListener("textarea", (a) => handleInput);
+  //
+  // onCleanup(() => {
+  //   document.addEventListener("input", handleInput);
+  //   document.addEventListener("textarea", handleInput);
+  // });
+
+  const [data2, { refetch }] = createResource(getAIEmojiFromText);
+
+  createEffect(() => {
+      refetch(props.value);
+  });
+
   return (
-    <>
-      <div class="bg-red-400" id="emoji-autocomplete-dropdown">
-        <a href="https://wxt.dev" target="_blank">
-          <img src={wxtLogo} class="logo" alt="WXT logo" />
-        </a>
-        <a href="https://solidjs.com" target="_blank">
-          <img src={solidLogo} class="logo solid" alt="Solid logo" />
-        </a>
-      </div>
-      <h1>WXT + Solid</h1>
-      <div class="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count()}
-        </button>
-        <p>
-          Edit <code>popup/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p class="read-the-docs">
-        Click on the WXT and Solid logos to learn more
-      </p>
-    </>
+    // <Show when={props.isVisible}>
+    <div
+      id={"aa"}
+      style={{
+        // "position-anchor": "--active-input",
+        // top: "anchor(bottom)",
+        "z-index": "1",
+        position: "fixed",
+        top: `${props.y}px`,
+        left: `${props.x}px`,
+      }}
+    >
+      <img src={solidLogo} class="logo solid" alt="Solid logo" />
+      <div>value = {props.value}</div>
+      <div>AI EMOJI = {data2()}!! {data2.state}</div>
+      <div>x ={props.x}</div>
+      <div>y ={props.y}</div>
+    </div>
+    // </Show>
   );
 }
 
