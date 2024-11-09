@@ -1,6 +1,6 @@
 import { render } from "solid-js/web";
 import App from "./App.tsx";
-import { emoji } from "./emoji";
+import { initialize } from "./content-script.ts";
 import "./style.css";
 
 function getCaretPosition(target: HTMLElement): number {
@@ -48,13 +48,18 @@ export default defineContentScript({
   cssInjectionMode: "ui",
 
   async main(ctx) {
+    import("./emojiData").then(({ default: emojiData }) => {
+      initialize(emojiData);
+    });
+    return;
+
     const [coodrinates, setCoordinates] = createSignal([]);
     const [isVisible, setIsVisible] = createSignal(false);
 
     function handleInput(event: InputEvent) {
-      setIsVisible(true)
+      setIsVisible(true);
       const target = event.target;
-      console.log("target", target.value)
+      console.log("target", target.value);
       target.style.anchorName = "--active-input";
       if (
         target instanceof HTMLTextAreaElement ||
@@ -75,11 +80,11 @@ export default defineContentScript({
               query,
             ]);
           } else {
-            setIsVisible(false)
+            setIsVisible(false);
             // hideEmojiDropdown();
           }
         } else {
-          setIsVisible(false)
+          setIsVisible(false);
           // hideEmojiDropdown();
         }
       }
@@ -92,27 +97,25 @@ export default defineContentScript({
       position: "inline",
       anchor: "body",
       onMount: (container) => {
-        const unmount = render(
-          () => {
-            return (
-                <>
-                  IsVisible? {isVisible() ? "TRUE" : "FALSE"}
-                  Coor: {JSON.stringify(coodrinates())}
-                  <input type="text" value={5} />
-                  <App
-                    isVisible={isVisible()}
-                    x={coodrinates()[0]}
-                    y={coodrinates()[1]}
-                    value={coodrinates()[2]}
-                /></>
-            );
-          },
-          container,
-        );
+        const unmount = render(() => {
+          return (
+            <>
+              IsVisible? {isVisible() ? "TRUE" : "FALSE"}
+              Coor: {JSON.stringify(coodrinates())}
+              <input type="text" value={5} />
+              <App
+                isVisible={isVisible()}
+                x={coodrinates()[0]}
+                y={coodrinates()[1]}
+                value={coodrinates()[2]}
+              />
+            </>
+          );
+        }, container);
         return unmount;
       },
       onRemove: (unmount) => {
-        setIsVisible(false)
+        setIsVisible(false);
         unmount?.();
       },
     });
