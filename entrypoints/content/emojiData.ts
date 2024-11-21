@@ -10,7 +10,8 @@ export interface EmojiItem {
   id: string;
   name: string;
   skins: EmojiSkin[];
-  version?: string;
+  version?: number;
+  emoticons?: Array<string>;
   keywords?: string[];
   emoticon?: string;
   shortcodes?: string[];
@@ -22,12 +23,14 @@ export interface EmojiData {
   };
   categories?: {
     id: string;
-    name: string;
+    name?: string;
+    emoticons?: Array<string>;
     emojis: string[];
   }[];
   aliases?: {
     [key: string]: string;
   };
+  sheet: { cols: number; rows: number };
 }
 
 const emojiData = {
@@ -19579,6 +19582,6 @@ const emojiData = {
     "flag-us": "us",
   },
   sheet: { cols: 61, rows: 61 },
-};
+} satisfies EmojiData;
 
 export default emojiData;

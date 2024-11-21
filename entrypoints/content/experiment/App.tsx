@@ -1,7 +1,7 @@
 import "~/assets/tailwind.css";
 import solidLogo from "@/assets/solid.svg";
 import "./App.css";
-import { getAIEmojiFromText } from "./getAIEmojiFromText";
+import { getAIEmojiFromText } from "../getAIEmojiFromText.ts";
 
 
 function App(props: {
