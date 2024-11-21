@@ -1,4 +1,5 @@
 import { EmojiData } from "./emojiData.ts";
+import { getAIEmojiFromText } from "./getAIEmojiFromText.ts";
 
 // Types
 interface Emoji {
@@ -229,7 +230,7 @@ const insertEmoji = (emoji: string, startIndex: number): void => {
 };
 
 // Event Handlers
-const handleInput = (event: Event): void => {
+const handleInput = async (event: Event): void => {
   const target = event.target as HTMLElement;
 
   if (
@@ -282,6 +283,13 @@ const handleInput = (event: Event): void => {
         emoji.name.includes(searchTerm) || emoji.id.includes(searchTerm),
     )
     .slice(0, MAX_SUGGESTIONS);
+
+  try {
+    const aiEmoji = await getAIEmojiFromText(searchTerm);
+    emojiList.unshift({ id: "AI", name: aiEmoji, skins: [] });
+  } catch (e) {
+    console.log("e", e);
+  }
 
   if (matchingEmojis.length === 0) {
     hideDropdown();
