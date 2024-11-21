@@ -1,6 +1,5 @@
-import { render } from 'solid-js/web';
+import { render } from "solid-js/web";
+import { App } from "./App";
+import "./style.css";
 
-import './style.css';
-import App from '../content/App';
-
-render(() => <App />, document.querySelector('#root')!);
+render(() => <App />, document.querySelector("#root")!);

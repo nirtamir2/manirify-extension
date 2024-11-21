@@ -1,35 +1,20 @@
-import { createSignal } from 'solid-js';
-import solidLogo from '@/assets/solid.svg';
-import wxtLogo from '/wxt.svg';
-import './App.css';
+import "~/assets/tailwind.css";
+import "./App.css";
 
-function App() {
-  const [count, setCount] = createSignal(0);
-
+export function App() {
   return (
-    <>
+    <div>
+      <Show
+        when={window.ai}
+        fallback={
+          <div class="text-red-500">Browser AI is not supported ✖︎</div>
+        }
+      >
+        <div class="text-green-500">The app uses AI ✅</div>
+      </Show>
       <div>
-        <a href="https://wxt.dev" target="_blank">
-          <img src={wxtLogo} class="logo" alt="WXT logo" />
-        </a>
-        <a href="https://solidjs.com" target="_blank">
-          <img src={solidLogo} class="logo solid" alt="Solid logo" />
-        </a>
+        To start press <code>:</code> on every text field and try
       </div>
-      <h1>WXT + Solid</h1>
-      <div class="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count()}
-        </button>
-        <p>
-          Edit <code>popup/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p class="read-the-docs">
-        Click on the WXT and Solid logos to learn more
-      </p>
-    </>
+    </div>
   );
 }
-
-export default App;
