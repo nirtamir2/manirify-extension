@@ -5,7 +5,7 @@ export function App() {
   return (
     <div>
       <Show
-        when={window.ai}
+        when={globalThis.ai}
         fallback={
           <div class="text-red-500">Browser AI is not supported ✖︎</div>
         }
