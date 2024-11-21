@@ -47,7 +47,7 @@ const initializeEmojiList = (emojiData: EmojiData): void => {
       .filter((emoji) => emoji.id && emoji.name && emoji.skins?.[0]?.native)
       .map((emoji) => ({
         id: emoji.id,
-        name: emoji.name.toLowerCase(),
+        name: emoji.name,
         skins: emoji.skins,
       }));
 
@@ -280,7 +280,8 @@ const handleInput = async (event: Event): void => {
   const matchingEmojis = emojiList
     .filter(
       (emoji) =>
-        emoji.name.includes(searchTerm) || emoji.id.includes(searchTerm),
+        emoji.name.toLowerCase().includes(searchTerm) ||
+        emoji.id.includes(searchTerm),
     )
     .slice(0, MAX_SUGGESTIONS);
 
@@ -311,7 +312,7 @@ const showDropdown = (x: number, y: number, emojis: Emoji[]): void => {
       <div class="emoji-option ${index === 0 ? "selected" : ""}" 
            data-emoji="${emoji.skins[0].native}" 
            data-index="${index}">
-        ${emoji.skins[0].native} :${emoji.id}:
+        ${emoji.skins[0].native} ${emoji.name}
       </div>
     `,
     )
